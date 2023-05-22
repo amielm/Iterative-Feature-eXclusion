@@ -27,7 +27,7 @@ from xgboost import XGBClassifier
 from xgboost.callback import EarlyStopping
 
 
-from IterativeWeakBooster import IterativeFeatureExclusion
+from IterativeFeatureExclusion import IterativeFeatureExclusion
 from utils import datasets_list, calculate_scores, hyperopt_XGBoost
 
 global_random_state = 42
