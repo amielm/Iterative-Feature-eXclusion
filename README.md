@@ -6,3 +6,7 @@ Code was written to be run in parallel on a cluster some changes might be necess
 Requires: XGBoost, Scikit-learn
 
 Warning: Running code may takea a long time if not on a distributed cluster.
+
+Results from our experiments are available here:
+Running IFX based on XGBoost with DART: https://api.wandb.ai/links/amielmeiseles-bgu/qto3g56z
+Running IFX based on XGBoost with gbtree: https://api.wandb.ai/links/amielmeiseles-bgu/f9xw65fl
