@@ -1,5 +1,5 @@
 # Iterative-Feature-eXclusion
-Mitigating feature starvation in gradient boosted decision trees
+A method for mitigating feature starvation in gradient boosted decision trees.
 
 Code was written to be run in parallel on a cluster some changes might be necessary for regular use, though the IterativeFeatureExclusion class should work as is.
 
