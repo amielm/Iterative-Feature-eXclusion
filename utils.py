@@ -162,3 +162,34 @@ class CustomEarlyStopping(EarlyStopping):
         # use a very high number that way all the iterations learnt so far are used even if they are not optimal
         model.set_attr(best_iteration=str(100000))
         return model
+
+def create_synthetic_xor(n_predictive_features=3, n_strong_features=1, n_features=4, n_samples=512,
+                         strong_feature_threshold=0.8, random_seed=17):
+
+    if n_features < (n_predictive_features + n_strong_features):
+        raise ValueError("number of predictive+strong features can not be more than total number of features")
+
+    rng = np.random.default_rng(seed=random_seed)
+    # sample the predictive features as random binary variables
+    X_predictive = rng.choice(2, size=(n_samples, n_predictive_features), replace=True)
+
+    # set the target as the XOR ("odd parity")
+    odd_parity = np.bitwise_xor.reduce(X_predictive, axis=1)
+    y = 1 - odd_parity
+
+    # sample/generate the strong feature(s)
+    X_strong = rng.uniform(low=0., high=1., size=(n_samples, n_strong_features))
+    for i in range(n_strong_features):
+        # uncorrelated_mask = np.logical_and(X_strong[:,i]>0.4,
+        #                X_predictive[:,0])
+        uncorrelated_mask = X_strong[:, i] > strong_feature_threshold
+        X_strong[uncorrelated_mask, i] = rng.choice(2, size=uncorrelated_mask.sum(), replace=True)
+        X_strong[np.invert(uncorrelated_mask), i] = odd_parity[np.invert(uncorrelated_mask)]
+
+    # add the noisy features
+    X_noise = rng.choice(2, size=(n_samples, n_features - (n_predictive_features + n_strong_features)), replace=True)
+
+    # stack the features together
+    X = np.hstack((X_strong, X_noise, X_predictive))
+
+    return X, y
